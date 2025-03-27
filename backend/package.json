@@ -1,0 +1,16 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "backend for IS Labs Project",
+  "main": "index.ts",
+  "scripts": {
+    "start": "npx ts-node index.ts"
+  },
+  "author": "DScraftPL",
+  "license": "ISC",
+  "dependencies": {
+    "@types/express": "^5.0.1",
+    "express": "^4.21.2",
+    "typescript": "^5.8.2"
+  }
+}
