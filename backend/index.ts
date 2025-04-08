@@ -1,12 +1,17 @@
 import express from "express"
+import csv from 'csv-parser'
+import fs from 'fs'
+import path from 'path'
+import models from './models/Schemas'
+import 'dotenv/config'
+import mapTransportationData from './functions/mapTransportationData'
+import connectDB from "./functions/connectDB";
+import app from './routes/routes'
 
-const app = express();
-const port =  3000;
+const PORT = process.env.PORT
+const MONGO_URI = process.env.DB_CONN_STRING
+const mongoose = connectDB(MONGO_URI);
 
-app.get("/", (req, res) => {
-    res.send("hello world!")
-})
-
-app.listen(port, () => {
-    console.log("hello this is server, i am working on: ", port);
+app.listen(PORT, () => {
+    console.log("hello this is server, I am working on: ", PORT);
 })
