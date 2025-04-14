@@ -1,7 +1,8 @@
 import models from "../models/Schemas"
 import replaceNullWithZero from "../functions/replacenullwithzero"
+import { Request, Response } from "express"
 
-const get = async (req: any, res: any) => {
+const get = async (req: Request, res: Response) => {
     const query = models.WHODataModel.find({})
     const data = await query.exec()
 
@@ -16,7 +17,7 @@ const get = async (req: any, res: any) => {
     res.send(filtered)
 }
 
-const post = async (req: any, res: any) => {
+const post = async (req: Request, res: Response) => {
   const query = models.WHODataModel.find({})
   const data = await query.exec()
 
@@ -57,7 +58,7 @@ const post = async (req: any, res: any) => {
   res.send(filtered)
 }
 
-const getDate = async (req: any, res: any) => {
+const getDate = async (req: Request, res: Response) => {
     const query = models.WHODataModel.find({})
     const data = await query.exec()
     const wyborMin = Date.parse(req.params.date)

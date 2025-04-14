@@ -3,9 +3,10 @@ import mapTransportationData from '../functions/mapTransportationData'
 import fs from 'fs';
 import path from 'path'
 import csv from 'csv-parser';
+import { Request, Response } from "express"
 
 
-const transport = (req: any, res: any) => {
+const transport = (req: Request, res: Response) => {
     const results: any[] = [];
     const csvFilePath = path.join(__dirname, '../data', 'Monthly_Transportation_Statistics_20250407.csv');
 
@@ -39,7 +40,7 @@ const transport = (req: any, res: any) => {
         });
 }
 
-const who = (req: any, res: any) => {
+const who = (req: Request, res: Response) => {
   const results: any[] = [];
   const csvFilePath = path.join(__dirname, '../data', 'WHO-COVID-19-global-data.csv')
   fs.createReadStream(csvFilePath)

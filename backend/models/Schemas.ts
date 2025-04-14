@@ -2,6 +2,13 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 const Schema = mongoose.Schema;
 
+export interface IUser extends Document {
+  username: string;
+  email: string;
+  password: string;
+  matchPassword(enteredPassword: string): Promise<boolean>;
+}
+
 const transportationDataSchema = new Schema({
   date: String,
   usAirlineTrafficTotalSeasonallyAdjusted: Number,
@@ -61,9 +68,13 @@ userSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
 })
 
+userSchema.methods.matchPassword = async function (enteredPassword: string): Promise<boolean> {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
 const TransportationDataModel = mongoose.model('TransportationData', transportationDataSchema);
 const WHODataModel = mongoose.model('WHOData', whoDataSchema);
-const UserModel = mongoose.model('UserData', userSchema); 
+const UserModel = mongoose.model<IUser>('UserData', userSchema); 
 
 export default {
     TransportationDataModel,
