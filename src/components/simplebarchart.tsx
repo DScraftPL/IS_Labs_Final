@@ -28,7 +28,7 @@ export default function SimpleBarChart(props: {
             .then((response) => response.json())
             .then((response) => {
                 const labels: any = []
-                const datasets : any = [{
+                const datasets: any = [{
                     label: props.type,
                     data: [],
                     borderWidth: 1
@@ -72,8 +72,8 @@ export default function SimpleBarChart(props: {
     if (props.startDate >= props.endDate) return <p>Pick another date...</p>
 
     return (
-        <div className="flex flex-col items-center w-full p-4">
-            <div className="w-full max-w-xl">
+        <div className="w-full h-full flex items-center justify-center">
+            <div className="w-3/4 h-3/4">
                 <Bar data={data} options={options} />
             </div>
         </div>

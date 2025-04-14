@@ -17,17 +17,25 @@ const DatePicker = (props: {
     props.setValue(e.target.value)
   }
 
-  return (<div>
-    <label htmlFor={props.name}>Choose {props.name} date: </label>
+  return (<div className="flex flex-col space-y-2">
+    <label
+      htmlFor={props.name}
+      className="text-sm font-medium text-gray-700"
+    >
+      Choose {props.name} date:
+    </label>
     <select
-        name={props.name}
-        id={props.name}
-        value={props.value} // Bind the value prop here
-        onChange={handleChange}
-      >
-      {dates.map((el, index) => {
-        return <option value={el} key={index}>{el}</option>
-      })}
+      name={props.name}
+      id={props.name}
+      value={props.value}
+      onChange={handleChange}
+      className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+    >
+      {dates.map((el, index) => (
+        <option value={el} key={index}>
+          {el}
+        </option>
+      ))}
     </select>
   </div>)
 }

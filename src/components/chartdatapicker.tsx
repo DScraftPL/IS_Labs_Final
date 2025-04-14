@@ -13,10 +13,10 @@ const ChartDataPicker = (props: {
   };
 
   return (
-    <>
+    <div className="flex flex-col justify-start border-2 border-gray-300 rounded-lg p-4 space-y-2">
       {options.map((option, index) => {
         return (
-          <div className="flex flex-row" key={index}>
+          <div className="space-x-2" key={index}>
             <input
               type="radio"
               id={option.value}
@@ -29,7 +29,7 @@ const ChartDataPicker = (props: {
           </div>
         );
       })}
-    </>
+    </div>
   );
 };
 
