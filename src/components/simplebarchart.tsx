@@ -51,7 +51,7 @@ export default function SimpleBarChart(props: {
                 console.error('Error fetching data:', error);
                 setLoading(false);
             });
-    })
+    }, [props.startDate, props.endDate, props.type]);
 
     const options = {
         responsive: true,
