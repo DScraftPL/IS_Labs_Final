@@ -12,7 +12,7 @@ const Home = () => {
   return (
     <div className="flex flex-row w-full space-x-8">
       <div className="flex flex-col items-start space-y-4 border-2 rounded-lg p-4 ml-20">
-        <div className="w-full flex flex-row space-x-4 border-2 border-gray-300 rounded-lg p-4">
+        <div className="w-full flex flex-row space-x-4 border-2 border-gray-300 rounded-lg p-4 place-content-between">
           <DatePicker
             name="start"
             value={startDate}
