@@ -19,7 +19,12 @@ const DatePicker = (props: {
 
   return (<div>
     <label htmlFor={props.name}>Choose {props.name} date: </label>
-    <select name={props.name} id={props.name} onChange={handleChange}>
+    <select
+        name={props.name}
+        id={props.name}
+        value={props.value} // Bind the value prop here
+        onChange={handleChange}
+      >
       {dates.map((el, index) => {
         return <option value={el} key={index}>{el}</option>
       })}

@@ -27,7 +27,7 @@ app.get("/", (req, res) => {
 //load data into MongoDB (Transport)
 app.get('/csv/transport', (req, res) => {
     const results: any[] = [];
-    const csvFilePath = path.join(__dirname, 'data', 'Monthly_Transportation_Statistics_20250407.csv');
+    const csvFilePath = path.join(__dirname, '../data', 'Monthly_Transportation_Statistics_20250407.csv');
 
     fs.createReadStream(csvFilePath)
         .pipe(csv({
@@ -62,7 +62,7 @@ app.get('/csv/transport', (req, res) => {
 //Load data into MongoDB (WHO)
 app.get('/csv/who', (req, res) => {
     const results: any[] = [];
-    const csvFilePath = path.join(__dirname, 'data', 'WHO-COVID-19-global-data.csv')
+    const csvFilePath = path.join(__dirname, '../data', 'WHO-COVID-19-global-data.csv')
     fs.createReadStream(csvFilePath)
         .pipe(csv({
             separator: ',',
