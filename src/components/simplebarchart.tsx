@@ -4,23 +4,40 @@ import { useState, useEffect } from 'react';
 
 Chart.register(...registerables);
 
-export default function SimpleBarChart() {
+export default function SimpleBarChart(props: {
+    title: string
+    startDate: string
+    endDate: string
+    type: string
+}) {
     const [loading, setLoading] = useState(true);
     const [data, setData] = useState<any>(null);
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/transport/")
+        fetch("http://localhost:3000/api/transport/", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "dateStart": parseInt(props.startDate),
+                "dateEnd": parseInt(props.endDate),
+                [props.type]: 1
+            })
+        })
             .then((response) => response.json())
             .then((response) => {
                 const labels: any = []
                 const datasets : any = [{
-                    label: 'usAirlineTrafficTotalSeasonallyAdjusted',
+                    label: props.type,
                     data: [],
                     borderWidth: 1
                 }]
+                //console.log(response)
                 response.forEach((row: any) => {
-                    labels.push(row.date)
-                    datasets[0].data.push(row.usAirlineTrafficTotalSeasonallyAdjusted)
+                    const data = row.date.split(" ")[0]
+                    labels.push(data)
+                    datasets[0].data.push(row[props.type])
                 })
                 const data = {
                     labels: labels,
@@ -28,6 +45,7 @@ export default function SimpleBarChart() {
                 }
                 setData(data)
                 setLoading(false)
+                //console.log(data)
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
@@ -35,23 +53,12 @@ export default function SimpleBarChart() {
             });
     })
 
-    const chartData = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [
-            {
-                label: 'Sample Data',
-                data: [12, 19, 3, 5, 2, 3],
-                borderWidth: 1
-            }
-        ]
-    };
-
     const options = {
         responsive: true,
         plugins: {
             title: {
                 display: true,
-                text: 'Simple Bar Chart Example'
+                text: props.title
             }
         },
         scales: {
@@ -62,6 +69,7 @@ export default function SimpleBarChart() {
     };
 
     if (loading) return <p>Loading...</p>
+    if (props.startDate >= props.endDate) return <p>Pick another date...</p>
 
     return (
         <div className="flex flex-col items-center w-full p-4">
