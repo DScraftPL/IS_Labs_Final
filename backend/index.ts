@@ -3,7 +3,7 @@ import cors from 'cors'
 import loggingMiddleware from "./middleware/log"
 import csvRoutes from "./routes/csvRoutes"
 import whoRoutes from "./routes/whoRoutes"
-import tranportRoutes from "./routes/tranportRoutes"
+import tranportRoutes from "./routes/transportRoutes"
 
 import 'dotenv/config'
 import connectDB from "./functions/connectDB";
@@ -11,7 +11,6 @@ import connectDB from "./functions/connectDB";
 const PORT = process.env.PORT
 const MONGO_URI = process.env.DB_CONN_STRING
 const mongoose = connectDB(MONGO_URI);
-
 
 const app = express()
 

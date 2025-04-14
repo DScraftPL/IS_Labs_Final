@@ -1,11 +1,7 @@
-import express from "express"
 import models from "../models/Schemas"
 import replaceNullWithZero from "../functions/replacenullwithzero"
 
-const router = express.Router();
-
-//get all relevant (2019+) data from transport
-router.get('/', async (req, res) => {
+const get = async (req: any, res: any) => {
   const query = models.TransportationDataModel.find({})
   query.select('')
   const data = await query.exec()
@@ -20,9 +16,9 @@ router.get('/', async (req, res) => {
   })
 
   res.send(filtered)
-})
+}
 
-router.post('/', async (req, res) => {
+const post = async (req: any, res: any) => {
   const query = models.TransportationDataModel.find({})
   query.select('')
   const data = await query.exec()
@@ -128,10 +124,9 @@ router.post('/', async (req, res) => {
   })
 
   res.send(filtered)
-})
+}
 
-//get all from given year
-router.get('/date/:date', async (req, res) => {
+const getDate = async (req: any, res: any) => {
   const query = models.TransportationDataModel.find({})
   query.select('')
   const data = await query.exec()
@@ -148,6 +143,10 @@ router.get('/date/:date', async (req, res) => {
   })
 
   res.send(filtered)
-})
+}
 
-export default router;
+export default {
+  get,
+  post,
+  getDate
+}
