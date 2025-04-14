@@ -56,20 +56,12 @@ const chartDataOptions = [
     value: "passengerRailTrainMiles",
   },
   {
-    label: "Passenger Rail (Total Reports)",
-    value: "passengerRailTotalReports",
-  },
-  {
     label: "Border Incoming Persons (US–Canada)",
     value: "usCanadaIncomingPersons",
   },
   {
     label: "Border Incoming Persons (US–Mexico)",
     value: "usMexicoIncomingPersons",
-  },
-  {
-    label: "Air Safety (Air Taxi / Commuter Fatalities)",
-    value: "airSafetyAirTaxiCommuterFatalities",
   },
   {
     label: "US Airline Traffic (Total, Non-Seasonally Adjusted)",

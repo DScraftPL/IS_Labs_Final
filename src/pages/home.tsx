@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import DatePicker from "../components/datepicker";
-import SimpleBarChart from "../components/simplebarchart";
+import TransportBarChart from "../components/transportbarchart";
 import ChartDataPicker from "../components/chartdatapicker";
 
 const Home = () => {
@@ -30,8 +30,8 @@ const Home = () => {
         />
       </div>
       <div className="flex-grow border-2 rounded-lg p-4 mr-20">
-        <SimpleBarChart
-          title="hello world"
+        <TransportBarChart
+          title="Transportation Data"
           startDate={startDate}
           endDate={endDate}
           type={chartData}

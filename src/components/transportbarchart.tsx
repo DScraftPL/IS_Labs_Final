@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 
 Chart.register(...registerables);
 
-export default function SimpleBarChart(props: {
+export default function TransportBarChart(props: {
   title: string;
   startDate: string;
   endDate: string;
@@ -70,8 +70,24 @@ export default function SimpleBarChart(props: {
     },
   };
 
-  if (loading) return <p>Loading...</p>;
-  if (props.startDate >= props.endDate) return <p>Pick another date...</p>;
+  if (loading)
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <p>Loading data, please wait...</p>
+      </div>
+    );
+  if (props.startDate >= props.endDate)
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <p>The start date must be earlier than the end date. Please adjust your selection.</p>
+      </div>
+    );
+  if (props.type.includes("highway") && parseInt(props.endDate) === 2023)
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <p>No data available for highways in the year 2023. Please choose a different type or date range.</p>
+      </div>
+    );
 
   return (
     <div className="w-full h-full flex items-center justify-center">
