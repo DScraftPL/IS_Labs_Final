@@ -1,13 +1,16 @@
 import { useState } from "react";
 
-import DatePicker from "../components/datepicker";
-import TransportBarChart from "../components/transportbarchart";
-import ChartDataPicker from "../components/chartdatapicker";
+import DatePicker from "../components/pickers/datepicker";
+import TransportBarChart from "../components/charts/transportbarchart";
+import ChartDataPicker from "../components/pickers/chartdatapicker";
+import InfectedBarChart from "../components/charts/infectedbarchart";
 
 const Home = () => {
-  const [startDate, setStartDate] = useState('2019')
-  const [endDate, setEndDate] = useState('2020')
-  const [chartData, setChartData] = useState("usAirlineTrafficDomesticSeasonallyAdjusted")
+  const [startDate, setStartDate] = useState('2020')
+  const [endDate, setEndDate] = useState('2021')
+  const [transportChartData, setTransportChartData] = useState("usAirlineTrafficDomesticSeasonallyAdjusted")
+  const [infectedChartData, setInfectedChartData] = useState("newCases")
+  const [currentChart, setCurrentChart] = useState("transport")
 
   return (
     <div className="flex flex-row w-full space-x-8">
@@ -18,6 +21,11 @@ const Home = () => {
             value={startDate}
             setValue={setStartDate}
           />
+          <button onClick={() => {
+            setCurrentChart(currentChart === "transport" ? "infected" : "transport")
+          }}>
+            Toggle
+          </button>
           <DatePicker
             name="end"
             value={endDate}
@@ -25,17 +33,26 @@ const Home = () => {
           />
         </div>
         <ChartDataPicker
-          selected={chartData}
-          setSelected={setChartData}
+          selected={currentChart === "transport" ? transportChartData : infectedChartData}
+          setSelected={currentChart === "transport" ? setTransportChartData : setInfectedChartData}
+          dataSource={currentChart}
         />
       </div>
       <div className="flex-grow border-2 rounded-lg p-4 mr-20">
-        <TransportBarChart
-          title="Transportation Data"
-          startDate={startDate}
-          endDate={endDate}
-          type={chartData}
-        />
+        {currentChart === "transport" ? (
+          <TransportBarChart
+            title="Transportation Data"
+            startDate={startDate}
+            endDate={endDate}
+            type={transportChartData}
+          />
+        ) : (
+          <InfectedBarChart
+            startDate={startDate}
+            endDate={endDate}
+            type={infectedChartData}
+          />
+        )}
       </div>
     </div>
   )

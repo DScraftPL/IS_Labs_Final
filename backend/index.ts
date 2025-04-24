@@ -4,6 +4,7 @@ import loggingMiddleware from "./middleware/log"
 import csvRoutes from "./routes/csvRoutes"
 import whoRoutes from "./routes/whoRoutes"
 import tranportRoutes from "./routes/transportRoutes"
+import authRoutes from "./routes/authRoutes"
 
 import 'dotenv/config'
 import connectDB from "./functions/connectDB";
@@ -21,6 +22,7 @@ app.use(express.json())
 app.use("/csv/", csvRoutes)
 app.use("/api/who/", whoRoutes)
 app.use("/api/transport/", tranportRoutes)
+app.use("/api/auth/", authRoutes)
 
 app.listen(PORT, () => {
     console.log("hello this is server, I am working on: ", PORT);
