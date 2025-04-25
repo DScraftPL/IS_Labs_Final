@@ -10,7 +10,7 @@ export const isTokenExpired = (token: string): boolean => {
     return decodedToken.exp < currentTime;
   } catch (error) {
     console.error("Error decoding token:", error);
-    return true; // Treat invalid tokens as expired
+    return true;
   }
 };
 
@@ -92,31 +92,26 @@ const fetchWithAuth = async (url: string, options: RequestInit = {}) => {
   const user = getCurrentUser();
   let token = user?.token;
 
-  // Check if the token is expired
   if (token && isTokenExpired(token)) {
     try {
-      // Refresh the token
       token = await refreshToken();
     } catch (error) {
       console.error("Failed to refresh token:", error);
-      logout(); // Log out if the refresh fails
+      logout();
       throw error;
     }
   }
 
-  // Add the Authorization header
   const headers = {
     ...options.headers,
     Authorization: `Bearer ${token}`,
   };
 
-  // Perform the fetch request
   const response = await fetch(url, {
     ...options,
     headers,
   });
 
-  // Handle unauthorized responses (e.g., token expired or invalid)
   if (response.status === 401) {
     logout();
     throw new Error("Unauthorized. Please log in again.");
