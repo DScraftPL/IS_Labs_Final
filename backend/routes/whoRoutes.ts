@@ -1,5 +1,6 @@
 import express from "express"
 import whoController from "../controllers/whoController";
+import protect from "../middleware/authMiddlware";
 
 const router = express.Router();
 
@@ -10,6 +11,6 @@ router.get('/', whoController.get)
 router.get('/date/:date', whoController.getDate)
 
 //post data to get filtered data
-router.post('/', whoController.post)
+router.post('/', protect,  whoController.post)
 
 export default router;

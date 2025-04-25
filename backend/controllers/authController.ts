@@ -1,6 +1,11 @@
 import { Request, Response } from "express"
 import models from "../models/Schemas"
 import generateToken from "../functions/generateToken"
+import Jwt from "jsonwebtoken"
+
+interface DecodedToken {
+  id: string;
+}
 
 const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -89,8 +94,38 @@ const updateName = async (req: Request, res: Response) => {
   }
 }
 
+const refeshToken = async (req: Request, res: Response) => {
+  const { refreshToken } = req.body
+  if (!refreshToken || typeof refreshToken !== "string") {
+    res.status(401).json({ message: "No refresh token provided" })
+    return  
+  }
+  try {
+    console.log(refreshToken)
+    const decoded = Jwt.verify(refreshToken, process.env.JWT_SECRET as string) as DecodedToken
+    const user = await models.UserModel.findById(decoded.id).select("-password")
+    if (!user) {
+      res.status(401).json({ message: "Invalid refresh token" })
+      return
+    }
+
+    res.json({
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      token: generateToken(user._id)
+    })
+
+  } catch (error) {
+    console.error("Error verifying refresh token:", error)
+    res.status(401).json({ message: "Invalid refresh token" })
+    return
+  }
+}
+
 export default {
   registerUser,
   loginUser,
-  updateName
+  updateName,
+  refeshToken
 }

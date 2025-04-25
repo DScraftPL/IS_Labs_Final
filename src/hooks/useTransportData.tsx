@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { useAuth } from "../context/authContext";
+import authService from "../services/authService";
 
 const useTransportData = (props: {
   startDate: string;
@@ -12,7 +13,7 @@ const useTransportData = (props: {
 
   useEffect(() => {
     setLoading(true);
-    fetch("http://localhost:3000/api/transport/", {
+    authService.fetchWithAuth("http://localhost:3000/api/transport/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

@@ -1,11 +1,41 @@
-import { useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useAuth } from "../context/authContext"
+import { jwtDecode } from "jwt-decode"
+import authService from "../services/authService"
+import { stat } from "fs"
 
 const Profile = () => {
   const [password, setPassword] = useState<string>('')
   const [username, setUsername] = useState<string>('')
+  const [timeLeft, setTimeLeft] = useState<string>('')
 
   const { state } = useAuth()
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+
+    if (state.user?.token) {
+      const updateTimeLeft = () => {
+        if (state.user?.token) {
+          const decodedToken = jwtDecode(state.user.token) as { exp: number };
+          const currentTime = Math.floor(Date.now() / 1000);
+          const timeRemaining = decodedToken.exp - currentTime;
+
+          if (timeRemaining > 0) {
+            setTimeLeft(`${Math.floor(timeRemaining / 60)} minutes ${timeRemaining % 60} seconds`);
+          } else {
+            setTimeLeft("Token expired");
+            clearInterval(interval); // Stop the interval if the token is expired
+          }
+        }
+      };
+
+      updateTimeLeft(); // Call immediately to set the initial value
+      interval = setInterval(updateTimeLeft, 1000); // Update every second
+    }
+
+    return () => clearInterval(interval); // Cleanup the interval on unmount
+  }, [state.user?.token])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -34,6 +64,27 @@ const Profile = () => {
       console.error("Error updating username:", error);
       alert("An error occurred. Please try again.");
     }
+  }
+
+  const handleRefresh = async (e: any) => {
+    e.preventDefault();
+    authService.refreshToken()
+      .then((token) => {
+        const decodedToken = jwtDecode(token) as { exp: number }
+        const currentTime = Math.floor(Date.now() / 1000)
+        const timeRemaining = decodedToken.exp - currentTime
+        
+        if(state.user?.token){
+          state.user.token = token
+        }
+
+        if (timeRemaining > 0) {
+          setTimeLeft(`${Math.floor(timeRemaining / 60)} minutes ${timeRemaining % 60} seconds`)
+        } else {
+          setTimeLeft("Token expired")
+        }
+        alert("Token refreshed successfully!");
+      })
   }
 
 
@@ -75,6 +126,13 @@ const Profile = () => {
             Change Username
           </button>
         </form>
+        <p>Token expires in: {timeLeft}</p>
+        <button
+          onClick={handleRefresh}
+          className="border-2 border-black rounded-lg p-2 hover:border-blue-500 hover:text-blue-500 w-auto self-start"
+        >
+          Refresh Token
+        </button>
       </div>
     </div>
   )
