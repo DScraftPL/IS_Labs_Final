@@ -25,16 +25,18 @@ const Profile = () => {
             setTimeLeft(`${Math.floor(timeRemaining / 60)} minutes ${timeRemaining % 60} seconds`);
           } else {
             setTimeLeft("Token expired");
-            clearInterval(interval); // Stop the interval if the token is expired
+            clearInterval(interval);
+            authService.logout();
+            return;
           }
         }
       };
 
-      updateTimeLeft(); // Call immediately to set the initial value
-      interval = setInterval(updateTimeLeft, 1000); // Update every second
+      updateTimeLeft();
+      interval = setInterval(updateTimeLeft, 1000);
     }
 
-    return () => clearInterval(interval); // Cleanup the interval on unmount
+    return () => clearInterval(interval);
   }, [state.user?.token])
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -82,6 +84,8 @@ const Profile = () => {
           setTimeLeft(`${Math.floor(timeRemaining / 60)} minutes ${timeRemaining % 60} seconds`)
         } else {
           setTimeLeft("Token expired")
+          authService.logout()
+          return
         }
         alert("Token refreshed successfully!");
       })

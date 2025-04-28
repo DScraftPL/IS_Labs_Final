@@ -1,6 +1,7 @@
 import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import useInfectedData from "../../hooks/useInfectedData";
+import ExportDataButton from "../exportdatabutton";
 
 Chart.register(...registerables);
 
@@ -16,12 +17,6 @@ export default function InfectedBarChart(props: {
     type: props.type,
   });
 
-  // if (props.startDate === "2019")
-  //   return (
-  //     <div className="w-full h-full flex items-center justify-center">
-  //       <p>Data not available for 2019. Choose another start date.</p>
-  //     </div>
-  //   );
 
   if (props.startDate >= props.endDate)
     return (
@@ -39,8 +34,12 @@ export default function InfectedBarChart(props: {
 
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-full h-full flex flex-col items-center justify-center flex-grow justify-items-around">
       <Bar data={data} />
+      <div className="flex flex-row w-full p-4 border-2 border-gray-300 rounded-lg mt-18 justify-around"> 
+        <ExportDataButton data={data} type={"xml"} />
+        <ExportDataButton data={data} type={"json"} />
+      </div>
     </div>
   );
 }

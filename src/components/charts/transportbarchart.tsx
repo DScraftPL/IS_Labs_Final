@@ -1,6 +1,7 @@
 import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import useTransportData from "../../hooks/useTransportData";
+import ExportDataButton from "../exportdatabutton";
 
 Chart.register(...registerables);
 
@@ -53,8 +54,12 @@ export default function TransportBarChart(props: {
     );
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-full h-full flex flex-col items-center justify-center flex-grow justify-items-around">
       <Bar data={data} options={options} />
+      <div className="flex flex-row w-full p-4 border-2 border-gray-300 rounded-lg mt-18 justify-around">
+        <ExportDataButton data={data} type={"xml"} />
+        <ExportDataButton data={data} type={"json"} />
+      </div>
     </div>
   );
 }

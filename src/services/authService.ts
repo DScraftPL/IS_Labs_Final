@@ -126,5 +126,6 @@ export default {
   logout,
   getCurrentUser,
   refreshToken,
+  isTokenExpired,
   fetchWithAuth
 }
