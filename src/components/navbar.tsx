@@ -22,6 +22,9 @@ const Navbar = () => {
           <NavLink to="/about" className="text-sm text-gray-500 border-2 rounded-lg p-1 font-semibold" end>
             About
           </NavLink>
+          <NavLink to="/import" className="text-sm text-gray-500 border-2 rounded-lg p-1 font-semibold" end>
+            Import
+          </NavLink>
         </div>
         <div className="flex space-x-8">
           {!state.isAuthenticated ? (

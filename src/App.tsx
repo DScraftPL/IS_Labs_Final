@@ -10,6 +10,7 @@ import { AuthProvider } from './context/authContext'
 import ProtectedRoute from './components/authRoutes/protectedroute'
 import Profile from './pages/profile'
 import AuthRoute from './components/authRoutes/authroute'
+import Import from './pages/import'
 
 function App() {
 
@@ -41,6 +42,9 @@ function App() {
               <ProtectedRoute>
                 <Profile />
               </ProtectedRoute>
+            } />
+            <Route path="/import" element={
+              <Import />
             } />
           </Routes>
         </div>
