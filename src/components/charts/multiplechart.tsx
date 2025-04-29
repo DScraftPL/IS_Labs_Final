@@ -40,7 +40,7 @@ export default function MultipleBarChart(props: {
                 position: "left",
                 title: {
                   display: true,
-                  text: "Scale for Dataset 0",
+                  text: "Scale for Infected Dataset",
                 },
               },
               y1: {
@@ -48,7 +48,7 @@ export default function MultipleBarChart(props: {
                 position: "right",
                 title: {
                   display: true,
-                  text: "Scale for Dataset 1",
+                  text: "Scale for Transport Dataset",
                 },
                 grid: {
                   drawOnChartArea: false, // Prevent grid lines from overlapping with y
