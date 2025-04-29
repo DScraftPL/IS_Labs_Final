@@ -1,4 +1,3 @@
-import React from "react";
 import { useMemo } from "react";
 import transportChartDataOptions from "../../data/transportchartdatapickeroptions";
 import infectedChartDataOptions from "../../data/infectedchartdatapickeroptions";

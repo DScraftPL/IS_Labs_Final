@@ -26,6 +26,7 @@ const useMultipleData = (props: {
   useEffect(() => {
     if(infectedData.loading || transportData.loading) {
       setLoading(true);
+      return
     } else {
       console.log("recompute")
       const labels = [

@@ -1,5 +1,3 @@
-import React from "react"
-
 const DatePicker = (props: {
   name: string
   value: string

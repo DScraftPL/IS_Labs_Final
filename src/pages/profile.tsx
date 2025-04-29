@@ -1,8 +1,7 @@
-import React, { useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 import { useAuth } from "../context/authContext"
 import { jwtDecode } from "jwt-decode"
 import authService from "../services/authService"
-import { stat } from "fs"
 
 const Profile = () => {
   const [password, setPassword] = useState<string>('')

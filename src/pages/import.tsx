@@ -66,7 +66,7 @@ const Import = () => {
           </label>
           {isData ? (
             <div className="w-full max-w-4xl flex justify-center items-center shadow-lg rounded-lg p-4">
-                <Bar data={data} />
+              <Bar data={data} />
             </div>
           ) : (
             <p className="text-gray-500 text-center">No data uploaded yet. Please upload a JSON or XML file.</p>

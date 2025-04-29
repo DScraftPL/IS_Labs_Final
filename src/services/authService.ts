@@ -38,7 +38,7 @@ const register = async (username: string, email: string, password: string) => {
     password,
     email,
   });
-  if (response.data) {  
+  if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));
   }
   return response.data;
@@ -83,7 +83,7 @@ const refreshToken = async () => {
     }
   } catch (error) {
     console.error("Error refreshing token:", error);
-    logout(); 
+    logout();
     throw error;
   }
 };
