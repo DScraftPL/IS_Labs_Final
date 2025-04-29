@@ -11,6 +11,7 @@ import ProtectedRoute from './components/authRoutes/protectedroute'
 import Profile from './pages/profile'
 import AuthRoute from './components/authRoutes/authroute'
 import Import from './pages/import'
+import MultipleChart from './pages/multiplechart'
 
 function App() {
 
@@ -45,6 +46,9 @@ function App() {
             } />
             <Route path="/import" element={
               <Import />
+            } />
+            <Route path="/multiple" element={
+              <MultipleChart />
             } />
           </Routes>
         </div>

@@ -1,32 +1,32 @@
+import convert from "xml-js";
+
 const ExportDataButton = (props: {
   data: any
   type: string
 }) => {
   const handleExport = () => {
-    console.log("Exporting data...");
-
     let fileContent = ""
     let mimeType = ""
 
-    if (props.type === "xml") {
-      const convertToXML = (obj: any, rootElement = "root"): string => {
-        let xml = `<${rootElement}>`;
-        for (const key in obj) {
-          const tagName = isNaN(Number(key)) ? key : `item_${key}`;
-          if (typeof obj[key] === "object") {
-        xml += convertToXML(obj[key], tagName);
-          } else {
-        xml += `<${tagName}>${obj[key]}</${tagName}>`;
-          }
-        }
-        xml += `</${rootElement}>`;
-        return xml;
-      };
+    console.log("Exporting data:", props.data);
 
-      fileContent = convertToXML(props.data);
+    if (props.type === "xml") {
+      const structuredData = {
+        labels: props.data.labels.map((label: string) => ({ label })),
+        datasets: props.data.datasets.map((dataset: any) => ({
+          dataset: {
+            label: dataset.label,
+            data: dataset.data.map((value: number) => ({ data: value })),
+            borderWidth: dataset.borderWidth,
+          },
+        })),
+      };
+    
+      fileContent =
+        '<?xml version="1.0" encoding="UTF-8"?>\n<root>\n' +
+        convert.js2xml(structuredData, { compact: true, ignoreComment: true, spaces: 4 }) + '</root>';
       mimeType = "application/xml";
     } else {
-      // Default to JSON export
       fileContent = JSON.stringify(props.data, null, 2);
       mimeType = "application/json";
     }

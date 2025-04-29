@@ -13,6 +13,7 @@ const useTransportData = (props: {
 
   useEffect(() => {
     setLoading(true);
+    console.log("Fetching transport data...");
     authService.fetchWithAuth("http://localhost:3000/api/transport/", {
       method: "POST",
       headers: {

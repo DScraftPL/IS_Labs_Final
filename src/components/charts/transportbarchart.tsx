@@ -54,11 +54,15 @@ export default function TransportBarChart(props: {
     );
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center flex-grow justify-items-around">
-      <Bar data={data} options={options} />
-      <div className="flex flex-row w-full p-4 border-2 border-gray-300 rounded-lg mt-18 justify-around">
-        <ExportDataButton data={data} type={"xml"} />
-        <ExportDataButton data={data} type={"json"} />
+    <div className="flex flex-grow w-full justify-center items-center">
+      <div className="flex flex-col rounded-lg w-full max-w-4xl">
+        <div className="bg-white shadow-lg rounded-lg p-4">
+          <Bar data={data} options={options} />
+        </div>
+        <div className="flex flex-row mt-8 justify-center space-x-4">
+          <ExportDataButton data={data} type={"xml"} />
+          <ExportDataButton data={data} type={"json"} />
+        </div>
       </div>
     </div>
   );

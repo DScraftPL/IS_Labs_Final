@@ -13,6 +13,7 @@ const useInfectedData = (props: {
 
   useEffect(() => {
     setLoading(true)
+    console.log("Fetching infected data...")
     fetch("http://localhost:3000/api/who/", {
       method: "POST",
       headers: {
