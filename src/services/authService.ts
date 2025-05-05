@@ -38,6 +38,9 @@ const register = async (username: string, email: string, password: string) => {
     password,
     email,
   });
+
+  console.log(response.data);
+
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));
   }
@@ -49,6 +52,8 @@ const login = async (email: string, password: string) => {
     email,
     password,
   });
+
+  console.log(response.data);
 
   if (response.data) {
     localStorage.setItem("user", JSON.stringify(response.data));

@@ -3,13 +3,20 @@ import replaceNullWithZero from "../functions/replacenullwithzero"
 import { Request, Response } from "express"
 
 const get = async (req: Request, res: Response) => {
-    const query = models.TransportationDataModel.find({})
+    const session = await models.TransportationDataModel.startSession()
+    session.startTransaction()
+
+    const query = models.TransportationDataModel.find({}).session(session);
     query.select('')
     const data = await query.exec()
     const temp = data.filter((row: any) => {
         let czas = Date.parse(row.date)
         return czas > Date.parse("2019")
     })
+
+    await session.commitTransaction()
+    session.endSession()
+
     const filtered = temp.map((row) => {
         const plainRow = row.toObject ? row.toObject() : row;
         const { _id, __v, createdAt, updatedAt, ...cleanedRow } = plainRow;
@@ -20,9 +27,15 @@ const get = async (req: Request, res: Response) => {
 }
 
 const post = async (req: Request, res: Response) => {
-    const query = models.TransportationDataModel.find({})
+    const session = await models.TransportationDataModel.startSession()
+    session.startTransaction()
+
+    const query = models.TransportationDataModel.find({}).session(session);
     query.select('')
     const data = await query.exec()
+
+    await session.commitTransaction()
+    session.endSession()
 
     const wyborMin = Date.parse(req.body.dateStart) - 86400000 // -1 day
     const wyborMax = Date.parse(req.body.dateEnd) - 86400000 // -1 day
@@ -129,9 +142,16 @@ const post = async (req: Request, res: Response) => {
 }
 
 const getDate = async (req: Request, res: Response) => {
-    const query = models.TransportationDataModel.find({})
+    const session = await models.TransportationDataModel.startSession()
+    session.startTransaction()
+
+    const query = models.TransportationDataModel.find({}).session(session);
     query.select('')
     const data = await query.exec()
+
+    await session.commitTransaction()
+    session.endSession()
+    
     const wyborMin = Date.parse(req.params.date)
     const wyborMax = Date.parse((parseInt(req.params.date) + 1).toString())
     const temp = data.filter((row: any) => {

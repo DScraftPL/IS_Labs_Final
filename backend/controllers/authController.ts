@@ -11,24 +11,42 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const { username, email, password } = req.body
 
-    const userExists = await models.UserModel.findOne({ email })
+    console.log("Registering user...")
+
+    const session = await models.UserModel.startSession()
+    session.startTransaction()
+
+    const userExists = await models.UserModel.findOne({ email }).session(session)
 
     if (userExists) {
+      console.log("User already exists")
       res.status(400).json({ message: "User already exists" })
       return
     }
 
     console.log("Creating user...")
 
-    const user = await models.UserModel.create({
+    const users: any = await models.UserModel.create([{
       username,
       email,
       password
-    })
+    }], { session })
+
+    const user = users[0]
 
     console.log(user)
 
     if (user) {
+      await session.commitTransaction()
+      session.endSession()
+
+      console.log("Response sent:", {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        token: generateToken(user._id)
+      });
+
       res.status(201).json({
         _id: user._id,
         username: user.username,
@@ -36,6 +54,9 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
         token: generateToken(user._id)
       })
     } else {
+      await session.abortTransaction()
+      session.endSession()
+
       console.error("User creation failed")
       res.status(400).json({ message: "Invalid user data" })
     }
@@ -47,12 +68,17 @@ const registerUser = async (req: Request, res: Response): Promise<void> => {
 
 const loginUser = async (req: Request, res: Response) => {
   try {
+    const session = await models.UserModel.startSession()
+    session.startTransaction()
+
     const { email, password } = req.body
-    const user = await models.UserModel.findOne({ email });
+    const user = await models.UserModel.findOne({ email }).session(session);
 
     console.log(user)
 
     if (user && (await user.matchPassword(password))) {
+      await session.commitTransaction()
+      session.endSession()
       res.json({
         _id: user._id,
         username: user.username,
@@ -60,6 +86,8 @@ const loginUser = async (req: Request, res: Response) => {
         token: generateToken(user._id)
       })
     } else {
+      await session.abortTransaction()
+      session.endSession()
       res.status(401).json({ message: "Invalid email or password" })
     }
 
@@ -71,12 +99,18 @@ const loginUser = async (req: Request, res: Response) => {
 
 const updateName = async (req: Request, res: Response) => {
   try {
-    const { email, password, username }  = req.body
-    const user = await models.UserModel.findOne({ email });
+    const session = await models.UserModel.startSession()
+    session.startTransaction()
 
-    if(user && (await user.matchPassword(password))) {
+    const { email, password, username } = req.body
+    const user = await models.UserModel.findOne({ email }).session(session);
+
+    if (user && (await user.matchPassword(password))) {
       user.username = username
       await user.save()
+
+      await session.commitTransaction()
+      session.endSession()
 
       res.json({
         _id: user._id,
@@ -85,6 +119,8 @@ const updateName = async (req: Request, res: Response) => {
         token: generateToken(user._id)
       })
     } else {
+      await session.abortTransaction()
+      session.endSession()
       res.status(401).json({ message: "Invalid email or password" })
     }
 
@@ -98,16 +134,21 @@ const refeshToken = async (req: Request, res: Response) => {
   const { refreshToken } = req.body
   if (!refreshToken || typeof refreshToken !== "string") {
     res.status(401).json({ message: "No refresh token provided" })
-    return  
+    return
   }
+  const session = await models.UserModel.startSession()
+  session.startTransaction()
   try {
     console.log(refreshToken)
     const decoded = Jwt.verify(refreshToken, process.env.JWT_SECRET as string) as DecodedToken
-    const user = await models.UserModel.findById(decoded.id).select("-password")
+    const user = await models.UserModel.findById(decoded.id).session(session).select("-password")
     if (!user) {
       res.status(401).json({ message: "Invalid refresh token" })
       return
     }
+
+    await session.commitTransaction()
+    session.endSession()
 
     res.json({
       _id: user._id,
@@ -117,6 +158,8 @@ const refeshToken = async (req: Request, res: Response) => {
     })
 
   } catch (error) {
+    await session.abortTransaction()
+    session.endSession()
     console.error("Error verifying refresh token:", error)
     res.status(401).json({ message: "Invalid refresh token" })
     return
