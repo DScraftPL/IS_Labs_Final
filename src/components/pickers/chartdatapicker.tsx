@@ -23,7 +23,7 @@ const ChartDataPicker = (props: {
             <input
               type="radio"
               id={option.value}
-              name="chartdatapicker"
+              name={props.dataSource}
               value={option.value}
               onChange={handleChange}
               checked={props.selected === option.value}

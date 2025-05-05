@@ -13,6 +13,8 @@ export default function MultipleBarChart(props: {
 }) {
   const { data, loading } = useMultipleData(props);
 
+  console.log(data)
+
   if (props.startDate >= props.endDate)
     return (
       <div className="w-full h-full flex items-center justify-center">

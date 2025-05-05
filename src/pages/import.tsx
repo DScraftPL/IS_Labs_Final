@@ -23,11 +23,20 @@ const Import = () => {
           setIsData(true)
         } else if (file.type === "application/xml" || file.name.endsWith(".xml")) {
           const dane: any = converter.xml2js(content as string, { compact: true })
+          console.log(dane)
           const daneToSet = {
             labels: dane.root.labels.map((row: any) => {
               return row.label._text
             }),
-            datasets: [
+            datasets: Array.isArray(dane.root.datasets) ? dane.root.datasets.map((dataset: any) => {
+              return {
+                data: dataset.dataset.data.map((row: any) => {
+                  return row.data._text
+                }),
+                label: dataset.dataset.label._text,
+                borderWidth: dataset.dataset.borderWidth._text,
+              }
+            }): [
               {
                 data: dane.root.datasets.dataset.data.map((row: any) => {
                   return row.data._text
@@ -41,11 +50,11 @@ const Import = () => {
           setData(daneToSet)
           setIsData(true)
         } else {
-          alert("Unsupported file type. Please upload a JSON.")
+          alert("Unsupported file type. Please upload a JSON or XML.")
         }
       } catch (error) {
         console.error("Error reading file:", error)
-        alert("Error reading file. Please ensure it is a valid JSON.")
+        alert("Error reading file. Please ensure it is a valid JSON or XML.")
       }
     }
     reader.readAsText(file)

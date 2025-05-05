@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react"
 import { useAuth } from "../context/authContext";
+import infectedData from "../data/infectedchartdatapickeroptions";
+
+const getLabelByValue = (value: string) => {
+  const label = infectedData.find((item) => item.value === value);
+  return label ? label.label : value;
+}
 
 const useInfectedData = (props: {
   startDate: string;
@@ -46,7 +52,7 @@ const useInfectedData = (props: {
         const labels: any = [];
         const datasets: any = [
           {
-            label: props.type,
+            label: getLabelByValue(props.type),
             data: [],
             borderWidth: 1,
           },
@@ -71,6 +77,7 @@ const useInfectedData = (props: {
           labels: labels,
           datasets: datasets,
         };
+        console.log(data)
         setData(data)
         setLoading(false)
       })

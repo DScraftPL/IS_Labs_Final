@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react"
 import { useAuth } from "../context/authContext";
 import authService from "../services/authService";
+import transportData from "../data/transportchartdatapickeroptions";
+
+const getLabelByValue = (value: string) => {
+  const label = transportData.find((item) => item.value === value);
+  return label ? label.label : value;
+}
 
 const useTransportData = (props: {
   startDate: string;
@@ -31,7 +37,7 @@ const useTransportData = (props: {
         const labels: any = [];
         const datasets: any = [
           {
-            label: props.type,
+            label: getLabelByValue(props.type),
             data: [],
             borderWidth: 1,
           },
