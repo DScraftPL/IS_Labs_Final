@@ -1,10 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Bar } from "react-chartjs-2";
 import converter from "xml-js";
 
 const Import = () => {
   const [data, setData] = useState<any>(null);
+  const [isArray, setIsArray] = useState<boolean>(false)
   const [isData, setIsData] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (data) {
+      setIsArray(data.datasets.length > 1)
+    }
+  }, [data])
 
   const handleDataUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0]
@@ -19,7 +26,6 @@ const Import = () => {
         if (file.type === "application/json") {
           const dane = JSON.parse(content as string)
           setData(dane)
-          console.log(dane)
           setIsData(true)
         } else if (file.type === "application/xml" || file.name.endsWith(".xml")) {
           const dane: any = converter.xml2js(content as string, { compact: true })
@@ -28,17 +34,20 @@ const Import = () => {
             labels: dane.root.labels.map((row: any) => {
               return row.label._text
             }),
-            datasets: Array.isArray(dane.root.datasets) ? dane.root.datasets.map((dataset: any) => {
+            datasets: Array.isArray(dane.root.datasets) ? dane.root.datasets.map((dataset: any, index: any) => {
+              setIsArray(true)
               return {
                 data: dataset.dataset.data.map((row: any) => {
                   return row.data._text
                 }),
                 label: dataset.dataset.label._text,
                 borderWidth: dataset.dataset.borderWidth._text,
+                yAxisID: index === 0 ? "y" : "y1"
               }
-            }): [
+            }) : [
               {
                 data: dane.root.datasets.dataset.data.map((row: any) => {
+                  setIsArray(false)
                   return row.data._text
                 }),
                 label: dane.root.datasets.dataset.label._text,
@@ -46,7 +55,6 @@ const Import = () => {
               }
             ]
           }
-          console.log(daneToSet)
           setData(daneToSet)
           setIsData(true)
         } else {
@@ -59,6 +67,8 @@ const Import = () => {
     }
     reader.readAsText(file)
   }
+
+  console.log(isArray)
 
   return (
     <div className="flex flex-grow px-20 mx-20 w-full justify-center">
@@ -75,7 +85,46 @@ const Import = () => {
           </label>
           {isData ? (
             <div className="w-full max-w-4xl flex justify-center items-center shadow-lg rounded-lg p-4">
-              <Bar data={data} />
+              {isArray ? (
+                <Bar data={data} options={{
+                  responsive: true,
+                  scales: {
+                    y: {
+                      type: "linear",
+                      position: "left",
+                      title: {
+                        display: true,
+                        text: "Scale for Infected Dataset",
+                      },
+                    },
+                    y1: {
+                      type: "linear",
+                      position: "right",
+                      title: {
+                        display: true,
+                        text: "Scale for Transport Dataset",
+                      },
+                      grid: {
+                        drawOnChartArea: false,
+                      },
+                    },
+                  },
+                }} />
+              ) : (
+                <Bar data={data} options={{
+                  responsive: true,
+                  scales: {
+                    y: {
+                      type: "linear",
+                      position: "left",
+                      title: {
+                        display: true,
+                        text: "Scale for Infected Dataset",
+                      },
+                    },
+                  },
+                }} />
+              )}
             </div>
           ) : (
             <p className="text-gray-500 text-center">No data uploaded yet. Please upload a JSON or XML file.</p>
