@@ -2,7 +2,7 @@ import { useState } from "react"
 
 import ChartDataPicker from "../components/pickers/chartdatapicker"
 import MultipleBarChart from "../components/charts/multiplechart"
-import DatePicker from "../components/datepicker"
+import DatePicker from "../components/pickers/datepicker"
 
 const MultipleChart = () => {
   const [startDate, setStartDate] = useState('2020')

@@ -66,7 +66,7 @@ const post = async (req: Request, res: Response) => {
         let rok = Date.parse(row.date)
         return (rok >= wyborMin && rok <= wyborMax)
     })
-    
+
     const filtered = temp.map((row) => {
         const plainRow = row.toObject ? row.toObject() : row;
         const { _id, __v, createdAt, updatedAt, ...cleanedRow } = plainRow;
@@ -151,7 +151,7 @@ const getDate = async (req: Request, res: Response) => {
 
     await session.commitTransaction()
     session.endSession()
-    
+
     const wyborMin = Date.parse(req.params.date)
     const wyborMax = Date.parse((parseInt(req.params.date) + 1).toString())
     const temp = data.filter((row: any) => {

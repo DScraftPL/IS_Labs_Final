@@ -77,10 +77,10 @@ const getDate = async (req: Request, res: Response) => {
 
     const query = models.WHODataModel.find({}).session(session)
     const data = await query.exec()
-    
+
     await session.commitTransaction()
     session.endSession()
-    
+
     const wyborMin = Date.parse(req.params.date)
     const wyborMax = Date.parse((parseInt(req.params.date) + 1).toString())
     const temp = data.filter((row: any) => {

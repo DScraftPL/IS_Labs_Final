@@ -74,8 +74,8 @@ const Profile = () => {
         const decodedToken = jwtDecode(token) as { exp: number }
         const currentTime = Math.floor(Date.now() / 1000)
         const timeRemaining = decodedToken.exp - currentTime
-        
-        if(state.user?.token){
+
+        if (state.user?.token) {
           state.user.token = token
         }
 

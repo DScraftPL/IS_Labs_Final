@@ -8,7 +8,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     authService.logout()
-    dispatch({ type: 'LOGOUT'})
+    dispatch({ type: 'LOGOUT' })
     navigate('/login')
   }
 

@@ -42,7 +42,6 @@ const useTransportData = (props: {
             borderWidth: 1,
           },
         ];
-        //console.log(response)
         if (Array.isArray(response)) {
           response.forEach((row: any) => {
             const data = row.date.split(" ")[0];

@@ -11,6 +11,6 @@ router.get('/', whoController.get)
 router.get('/date/:date', whoController.getDate)
 
 //post data to get filtered data
-router.post('/', protect,  whoController.post)
+router.post('/', protect, whoController.post)
 
 export default router;

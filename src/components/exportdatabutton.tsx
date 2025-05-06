@@ -21,7 +21,7 @@ const ExportDataButton = (props: {
           },
         })),
       };
-    
+
       fileContent =
         '<?xml version="1.0" encoding="UTF-8"?>\n<root>\n' +
         convert.js2xml(structuredData, { compact: true, ignoreComment: true, spaces: 4 }) + '</root>';

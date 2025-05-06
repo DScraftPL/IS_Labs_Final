@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react';
+import { useState, useEffect } from 'react';
 
 import useInfectedData from './useInfectedData';
 import useTransportData from './useTransportData';
@@ -24,7 +24,7 @@ const useMultipleData = (props: {
   })
 
   useEffect(() => {
-    if(infectedData.loading || transportData.loading) {
+    if (infectedData.loading || transportData.loading) {
       setLoading(true);
       return
     } else {
@@ -51,11 +51,11 @@ const useMultipleData = (props: {
       setLoading(false);
     }
   }, [
-    infectedData.loading, 
-    transportData.loading, 
-    infectedData.data?.labels, 
-    transportData.data?.labels, 
-    infectedData.data?.datasets, 
+    infectedData.loading,
+    transportData.loading,
+    infectedData.data?.labels,
+    transportData.data?.labels,
+    infectedData.data?.datasets,
     transportData.data?.datasets
   ]);
 

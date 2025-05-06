@@ -25,7 +25,7 @@ const transport = (req: Request, res: Response) => {
 
             try {
                 await models.TransportationDataModel.deleteMany({}).session(session);
-                const inserted = await models.TransportationDataModel.insertMany(results, {session});
+                const inserted = await models.TransportationDataModel.insertMany(results, { session });
                 res.json({
                     success: true,
                     count: results.length,
@@ -81,7 +81,7 @@ const who = (req: Request, res: Response) => {
             session.startTransaction();
             try {
                 await models.WHODataModel.deleteMany({}).session(session);
-                const inserted = await models.WHODataModel.insertMany(results, {session});
+                const inserted = await models.WHODataModel.insertMany(results, { session });
                 await session.commitTransaction();
                 session.endSession();
                 res.json({

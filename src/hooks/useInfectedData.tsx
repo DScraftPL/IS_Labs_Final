@@ -35,7 +35,7 @@ const useInfectedData = (props: {
       .then((response) => response.json())
       .then((response) => {
         const monthly: { [key: string]: number } = {};
-        if(props.startDate === "2019"){
+        if (props.startDate === "2019") {
           monthly["2019-01"] = 0
           monthly["2019-02"] = 0
           monthly["2019-03"] = 0
@@ -88,6 +88,6 @@ const useInfectedData = (props: {
   }, [props.startDate, props.endDate, props.type])
 
   return { data, loading }
-} 
+}
 
 export default useInfectedData

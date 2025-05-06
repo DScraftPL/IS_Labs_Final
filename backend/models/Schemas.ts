@@ -63,7 +63,7 @@ const userSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 userSchema.pre('save', async function (next) {
-  if(!this.isModified('password')) return next();
+  if (!this.isModified('password')) return next();
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
 })
@@ -74,10 +74,10 @@ userSchema.methods.matchPassword = async function (enteredPassword: string): Pro
 
 const TransportationDataModel = mongoose.model('TransportationData', transportationDataSchema);
 const WHODataModel = mongoose.model('WHOData', whoDataSchema);
-const UserModel = mongoose.model<IUser>('UserData', userSchema); 
+const UserModel = mongoose.model<IUser>('UserData', userSchema);
 
 export default {
-    TransportationDataModel,
-    WHODataModel,
-    UserModel
+  TransportationDataModel,
+  WHODataModel,
+  UserModel
 }

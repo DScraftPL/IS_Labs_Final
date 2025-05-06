@@ -81,7 +81,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
-    
+
     if (storedUser) {
       const user = JSON.parse(storedUser);
       dispatch({ type: 'LOGIN_SUCCESS', payload: user });
