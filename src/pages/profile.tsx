@@ -42,6 +42,7 @@ const Profile = () => {
     e.preventDefault();
 
     try {
+      console.log("Updating username...");
       const response = await fetch("http://localhost:3000/api/auth/update", {
         method: "POST",
         headers: {
@@ -57,7 +58,9 @@ const Profile = () => {
       const data = await response.json();
 
       if (response.ok) {
-        alert("Username updated successfully!");
+        alert("Username updated successfully! Please log in again!");
+        authService.logout();
+        window.location.reload();
       } else {
         alert(data.message || "Failed to update username");
       }
@@ -100,10 +103,10 @@ const Profile = () => {
           className="flex flex-col space-y-4"
         >
           <div className="space-x-2">
-            <label htmlFor="email">New Username:</label>
+            <label htmlFor="username">New Username:</label>
             <input
-              type="email"
-              id="email"
+              type="text"
+              id="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               placeholder="Enter your new username"
