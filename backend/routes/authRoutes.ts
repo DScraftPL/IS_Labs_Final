@@ -7,5 +7,6 @@ router.post("/register", authController.registerUser);
 router.post("/login", authController.loginUser);
 router.post("/update", protect, authController.updateName);
 router.post("/refresh", authController.refeshToken);
+router.post("/delete", protect, authController.deleteUser);
 
 export default router;

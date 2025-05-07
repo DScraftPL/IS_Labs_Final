@@ -6,6 +6,8 @@ import authService from "../services/authService"
 const Profile = () => {
   const [password, setPassword] = useState<string>('')
   const [username, setUsername] = useState<string>('')
+  const [passwordDelete, setPasswordDelete] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
   const [timeLeft, setTimeLeft] = useState<string>('')
 
   const { state } = useAuth()
@@ -66,6 +68,41 @@ const Profile = () => {
       }
     } catch (error) {
       console.error("Error updating username:", error);
+      alert("An error occurred. Please try again.");
+    }
+  }
+
+  const handleDelete = async (e: any) => { 
+    e.preventDefault();
+    try {
+      if(email !== state.user?.email) {
+        alert("Email does not match the logged-in user");
+        return;
+      }
+
+      const response = await fetch("http://localhost:3000/api/auth/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${state.user?.token}`,
+        },
+        body: JSON.stringify({
+          email: email,
+          username: state.user?.username,
+          password: passwordDelete,
+        }),
+      });
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("Account deleted successfully! Please log in again!");
+        authService.logout();
+        window.location.reload();
+      } else {
+        alert(data.message || "Failed to delete account");
+      }
+    } catch (error) {
+      console.error("Error deleting account:", error);
       alert("An error occurred. Please try again.");
     }
   }
@@ -139,6 +176,40 @@ const Profile = () => {
         >
           Refresh Token
         </button>
+        <form
+          onSubmit={handleDelete}
+          className="flex flex-col space-y-4"
+        >
+          <div className="space-x-2">
+            <label htmlFor="email">Email:</label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+            />
+          </div>
+
+          <div className="space-x-2">
+            <label htmlFor="password">Password:</label>
+            <input
+              type="password"
+              id="password"
+              value={passwordDelete}
+              onChange={(e) => setPasswordDelete(e.target.value)}
+              placeholder="Enter password"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            className="border-2 border-black rounded-lg p-2 hover:border-blue-500 hover:text-blue-500 w-auto self-start"
+          >
+            Delete Account
+          </button>
+        </form>
       </div>
     </div>
   )

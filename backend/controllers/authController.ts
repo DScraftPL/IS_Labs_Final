@@ -167,9 +167,42 @@ const refeshToken = async (req: Request, res: Response) => {
   }
 }
 
+const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const session = await models.UserModel.startSession()
+    session.startTransaction()
+
+    const { email, password, username } = req.body
+    const user: any = await models.UserModel.findOne({ email }).session(session);
+
+    if(username !== user.username) {
+      res.status(401).json({ message: "Username does not match" })
+      return
+    }
+
+    if (user && (await user.matchPassword(password))) {
+      await models.UserModel.deleteOne({ email }).session(session)
+
+      await session.commitTransaction()
+      session.endSession()
+
+      res.json({ message: "User deleted" })
+    } else {
+      await session.abortTransaction()
+      session.endSession()
+      res.status(401).json({ message: "Invalid email or password" })
+    }
+
+  } catch (error) {
+    console.error(error)
+    res.status(500).json({ message: "Server error" })
+  }
+}
+
 export default {
   registerUser,
   loginUser,
   updateName,
-  refeshToken
+  refeshToken,
+  deleteUser
 }
