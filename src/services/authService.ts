@@ -32,11 +32,12 @@ axios.interceptors.request.use(
   }
 );
 
-const register = async (username: string, email: string, password: string) => {
+const register = async (username: string, email: string, password: string, role: string) => {
   const response = await axios.post(API_URL + "register", {
     username,
     password,
     email,
+    role,
   });
 
   console.log(response.data);

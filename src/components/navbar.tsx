@@ -1,15 +1,20 @@
 import { useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from "../context/authContext";
 import authService from "../services/authService";
+import { jwtDecode } from "jwt-decode";
 
 const Navbar = () => {
   const { state, dispatch } = useAuth();
   const navigate = useNavigate();
-
+  var token = {role: ''};
   const handleLogout = () => {
     authService.logout()
     dispatch({ type: 'LOGOUT' })
     navigate('/login')
+  }
+
+  if(state.user){
+    token = jwtDecode(state.user?.token) as { role: string };
   }
 
   return (
@@ -28,6 +33,13 @@ const Navbar = () => {
           <NavLink to="/multiple" className="text-sm text-gray-500 border-2 rounded-lg p-1 font-semibold" end>
             Multiple
           </NavLink>
+          { state.isAuthenticated && token.role === 'admin' && (
+            <>
+              <NavLink to="/admin" className="text-sm text-red-500 border-2 rounded-lg p-1 font-semibold" end>
+                Admin
+              </NavLink>
+            </>
+          )}
         </div>
         <div className="flex space-x-8">
           {!state.isAuthenticated ? (

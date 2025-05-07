@@ -12,6 +12,8 @@ import Profile from './pages/profile'
 import AuthRoute from './components/authRoutes/authroute'
 import Import from './pages/import'
 import MultipleChart from './pages/multiplechart'
+import Admin from './pages/admin'
+import AdminRoute from './components/authRoutes/adminroute'
 
 function App() {
 
@@ -49,6 +51,11 @@ function App() {
             } />
             <Route path="/multiple" element={
               <MultipleChart />
+            } />
+            <Route path="/admin" element={
+              <AdminRoute>
+                <Admin />
+              </AdminRoute>
             } />
           </Routes>
         </div>

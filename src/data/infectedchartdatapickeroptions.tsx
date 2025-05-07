@@ -1,19 +1,23 @@
 const infectedChartDataOptions = [
   {
     "label": "New Cases",
-    "value": "newCases"
+    "value": "newCases",
+    "group": "cases"
   },
   {
     "label": "Culminative Cases",
-    "value": "cumulativeCases"
+    "value": "cumulativeCases",
+    "group": "cases"
   },
   {
     "label": "New Deaths",
-    "value": "newDeaths"
+    "value": "newDeaths",
+    "group": "deaths"
   },
   {
     "label": "Culminative Deaths",
-    "value": "cumulativeDeaths"
+    "value": "cumulativeDeaths",
+    "group": "deaths"
   }
 ];
 

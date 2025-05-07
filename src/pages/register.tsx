@@ -9,6 +9,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+  const [role, setRole] = useState("user");
 
   const { dispatch } = useAuth();
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ const Register = () => {
     }
     try {
       dispatch({ type: "REGISTER_REQUEST" });
-      const userData = await authService.register(username, email, password);
+      const userData = await authService.register(username, email, password, role);
       dispatch({ type: "REGISTER_SUCCESS", payload: userData });
       navigate("/home");
     } catch (error: any) {
@@ -66,6 +67,15 @@ const Register = () => {
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="border rounded-lg p-2"
           />
+          <select
+            name="role"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+            className="border rounded-lg p-2"
+          >
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+          </select>
           {error && <p className="text-red-500">{error}</p>}
           <button type="submit" className="bg-blue-500 text-white p-2 rounded-lg">
             Register
