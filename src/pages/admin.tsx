@@ -40,6 +40,15 @@ const Admin = () => {
     return label ? label.group : value;
   }
 
+  const getRandomColor = (): string => {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
   useEffect(() => {
     setLoading(true);
     setIsInfectedData(false);
@@ -100,6 +109,7 @@ const Admin = () => {
               datasets[index].data.push(monthly[key][item])
             })
             datasets[index].yAxisID = getTransportGroup(item)
+            datasets[index].backgroundColor = getRandomColor()
           })
           setTransportData({
             labels: labels,
@@ -126,6 +136,18 @@ const Admin = () => {
         const monthly: any = {};
         if (startDate === "2019") {
           checkedItemsInfected.forEach((item: any) => {
+            monthly["2019-01"] = {}
+            monthly["2019-02"] = {}
+            monthly["2019-03"] = {}
+            monthly["2019-04"] = {}
+            monthly["2019-05"] = {}
+            monthly["2019-06"] = {}
+            monthly["2019-07"] = {}
+            monthly["2019-08"] = {}
+            monthly["2019-09"] = {}
+            monthly["2019-10"] = {}
+            monthly["2019-11"] = {}
+            monthly["2019-12"] = {}
             monthly["2019-01"][item] = 0
             monthly["2019-02"][item] = 0
             monthly["2019-03"][item] = 0
@@ -171,6 +193,7 @@ const Admin = () => {
               datasets[index].data.push(monthly[key][item])
             })
             datasets[index].yAxisID = getInfectedGroup(item)
+            datasets[index].backgroundColor = getRandomColor()
           })
 
           setInfectedData({
@@ -256,55 +279,58 @@ const Admin = () => {
     <div className="flex flex-grow px-20 mx-20 w-full">
       <div className="flex border-2 rounded-lg p-4 w-full">
         <div className="flex flex-row">
+          <div className="flex flex-col flex-wrap">
+            {
+              transportChartDataOptions.map((item: any, index: number) => {
+                return (<div key={index} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id={`checkbox-${index}`}
+                    name={item.name}
+                    value={item.value}
+                    className=""
+                    onChange={handleCheckboxChangeTransport}
+                  />
+                  <label htmlFor={`checkbox-${index}`} className="text-gray-700">
+                    {item.label}
+                  </label>
+                </div>)
+              })
+            }
+            <DatePicker name="startDate" value={startDate} setValue={setStartDate} />
+            <DatePicker name="endDate" value={endDate} setValue={setEndDate} />
+          </div>
           <div className="flex flex-col">
-        {
-          transportChartDataOptions.map((item: any, index: number) => {
-            return (<div key={index} className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id={`checkbox-${index}`}
-                name={item.name}
-                value={item.value}
-                className=""
-                onChange={handleCheckboxChangeTransport}
-              />
-              <label htmlFor={`checkbox-${index}`} className="text-gray-700">
-                {item.label}
-              </label>
-            </div>)
-          })
-        }
-        </div>
-        <div className="flex flex-col">
-        {
-          infectedChartDataOptions.map((item: any, index: number) => {
-            return (<div key={index} className="flex items-center space-x-2">
-              <input
-                type="checkbox"
-                id={`checkbox-${index}`}
-                name={item.name}
-                value={item.value}
-                className=""
-                onChange={handleCheckboxChangeInfected}
-              />
-              <label htmlFor={`checkbox-${index}`} className="text-gray-700">
-                {item.label}
-              </label>
-            </div>)
-          })
-        }
-        </div>
+            {
+              infectedChartDataOptions.map((item: any, index: number) => {
+                return (<div key={index} className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    id={`checkbox-${index}`}
+                    name={item.name}
+                    value={item.value}
+                    className=""
+                    onChange={handleCheckboxChangeInfected}
+                  />
+                  <label htmlFor={`checkbox-${index}`} className="text-gray-700">
+                    {item.label}
+                  </label>
+                </div>)
+              })
+            }
+          </div>
         </div>
         {loading ? (
           <p className="text-gray-500">Loading...</p>
         ) : (
           <div className="flex flex-grow">
-            <div className="w-full h-96"> 
+            <div className="w-full h-96">
               <Line
                 data={data}
                 options={{
                   responsive: true,
                   maintainAspectRatio: false,
+                  showLine: false,
                 }}
               />
             </div>
