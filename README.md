@@ -25,7 +25,7 @@ Make sure MongoDB is running.
 Run backend and frontend in 2 seperate terminal instances. 
 In backend/.env file make sure you setup link to your MongoDB instance in `DB_CONN_STRING`.
 Ports are hardcoded in front, app will only fetch data from localhost:3000.
-To upload data to database, make sure backend is running and .csv files are in backend/data/ directory. Invoke `localhost:3000/csv/transport` and `localhost:3000/csv/who` to fill database with data.
+To upload data to database, make sure backend is running and .csv files are in backend/data/ directory. Invoke `localhost:3000/csv/transport` and `localhost:3000/csv/who` to fill database with data.
 
 ### Backend
 navigate to backend folder, use `npm install` and `npm run dev` 
@@ -68,5 +68,6 @@ Source: [data.who.int](https://data.who.int/dashboards/covid19/data)
 ### Monthly_Transportation_Statistics_20250407.csv
 Source: [data.bts.gov](https://data.bts.gov/Research-and-Statistics/Monthly-Transportation-Statistics/crem-w557/about_data)
 
-
+## Author
+Kacper Wiącek 6.15
 
